@@ -36,14 +36,12 @@ func main() {
 func minimumTotal(triangle [][]int) int {
     var sum int
     min := 10001
-    e := 1
     for i := 0; i < len(triangle); i++ {
-        for j := 0; j < e; j++{
+        for j := 0; j < i + 1; j++{
             if triangle[i][j] < min {
                 min = triangle[i][j]
             }
         }
-        e ++
         sum += min
         min = 10000
     }
