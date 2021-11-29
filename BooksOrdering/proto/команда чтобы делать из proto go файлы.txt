@@ -1,0 +1,3 @@
+protoc -I . FileName.proto --go_out=plugins=grpc:.
+
+(в proto файл закинуть строку option go_package = "./"; )

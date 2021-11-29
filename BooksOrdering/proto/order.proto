@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "./";
+
+service Order {
+    rpc MakeOrder(NewOrder) returns (Response) {}
+}
+
+message NewOrder {
+    string id = 1; //личный номер заказчика
+    string name = 2; //название книги, которую хочет заказчик.
+    string bookId = 3; //номер книги, которую хочет заказчик.
+    string password = 4; //без пароля заказчик не может сделать заказ
+}
+
+message Registration {
+    string FIO = 1; //ФИО заказчика
+    string password = 2; //пароль заказчика
+}
+
+message Response {
+    bool created = 1;
+    NewOrder neworder = 2;
+}
