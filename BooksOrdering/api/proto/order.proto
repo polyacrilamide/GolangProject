@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+package api;
+
+option go_package = "./";
+
+service Order {
+    rpc MakeOrder (NewOrder) returns (Response) {}
+    rpc GetOrder (GetRequest) returns (Response) {}
+}
+
+message NewOrder {
+    string name = 1; //название книги, которую хочет заказчик.
+    string bookId = 2; //номер книги, которую хочет заказчик.
+    string FIO = 3; //ФИО заказчика
+    string id = 4; //айди заказчика
+    string password = 5; //пароль заказчика
+}
+
+message GetRequest {}
+
+message Response {
+    bool created = 1;
+    NewOrder newOrder = 2;
+    repeated NewOrder newOrders = 3;
+}
+
