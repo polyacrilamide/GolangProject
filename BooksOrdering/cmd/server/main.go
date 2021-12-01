@@ -16,9 +16,9 @@ func main (){
 
 	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Order: Ошибка прослушивания: %v", err)
 	}
 	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatalf("Order: Ошибка запуска сервера: %v", err)
 	}
 }

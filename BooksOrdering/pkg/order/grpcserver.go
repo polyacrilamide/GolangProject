@@ -3,6 +3,8 @@ package order
 import (
 	api "BooksOrdering/pkg/api"
 	"context"
+	"google.golang.org/grpc"
+	"log"
 )
 
 type IRepository interface {
@@ -33,6 +35,17 @@ func (s *GRPCServer) MakeOrder(ctx context.Context, req *api.NewOrder) (*api.Res
 	if err != nil {
 		return nil, err
 	}
+	conn, err := grpc.Dial(":8070", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("Order: Не удалось подключиться к серверу Book Finder: %v", err)
+	}
+
+	client := api.NewBookSearchClient(conn)
+	res, err := client.FindTheBook(context.Background(), &api.BookInfo{BookId: req.BookId, BookName: req.Name})
+	if err != nil {
+		log.Fatalf("Order: Не удалось запросить поиск книги: %v", err)
+	}
+	log.Printf("Запрос на поиск книги отправлен. Результат: %t", res.Availability)
 	return &api.Response{Created: true, NewOrder: order}, nil
 }
 

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "./";
+
+service BookSearch {
+    rpc FindTheBook (BookInfo) returns (Answer) {}
+}
+
+message BookInfo {
+    string bookName = 1;
+    string bookId = 2;
+}
+
+message Answer {
+    bool availability = 1;
+}

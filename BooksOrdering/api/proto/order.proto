@@ -12,9 +12,8 @@ service Order {
 message NewOrder {
     string name = 1; //название книги, которую хочет заказчик.
     string bookId = 2; //номер книги, которую хочет заказчик.
-    string FIO = 3; //ФИО заказчика
-    string id = 4; //айди заказчика
-    string password = 5; //пароль заказчика
+    string login = 3; //логин заказчика
+    string password = 4; //пароль заказчика
 }
 
 message GetRequest {}
