@@ -9,15 +9,8 @@ import (
 )
 
 func main (){
-	someBooks := []*api.BookInfo{
-		{BookId: "123456", BookName: "book1"},
-		{BookId: "456789", BookName: "book2"},
-		{BookId: "789123", BookName: "book3"},
-		{BookId: "123789", BookName: "book4"},
-	}
-	repo := &bookfinder.Repository{Books: someBooks}
 	grpcServer := grpc.NewServer()
-	srv := &bookfinder.GRPCServer{BookRepository: repo}
+	srv := &bookfinder.GRPCServer{}
 	api.RegisterBookSearchServer(grpcServer, srv)
 
 	listener, err := net.Listen("tcp", ":8070")

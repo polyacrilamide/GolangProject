@@ -10,8 +10,7 @@ import (
 
 func main (){
 	grpcServer := grpc.NewServer()
-	repo := &order.Repository{}
-	srv := &order.GRPCServer{IRepository: repo}
+	srv := &order.GRPCServer{}
 	api.RegisterOrderServer(grpcServer, srv)
 
 	listener, err := net.Listen("tcp", ":8080")

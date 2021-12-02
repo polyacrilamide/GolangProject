@@ -6,7 +6,7 @@ option go_package = "./";
 
 service Order {
     rpc MakeOrder (NewOrder) returns (Response) {}
-    rpc GetOrder (GetRequest) returns (Response) {}
+    rpc GetOrder (GetRequest) returns (OrdersListResponse) {}
 }
 
 message NewOrder {
@@ -16,11 +16,20 @@ message NewOrder {
     string password = 4; //пароль заказчика
 }
 
+message OrdersList {
+    string bookName = 1;
+    string bookId = 2;
+    string login = 3;
+}
+
+message OrdersListResponse {
+    repeated OrdersList orderslist = 1;
+}
+
 message GetRequest {}
 
 message Response {
     bool created = 1;
     NewOrder newOrder = 2;
-    repeated NewOrder newOrders = 3;
 }
 

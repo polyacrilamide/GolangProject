@@ -49,10 +49,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Не удалось получить список всех заказов: %v", err)
 	}
-	for _, ord := range getAll.NewOrders{
-		fmt.Printf("Название книги: %v\n", ord.GetName())
+	for _, ord := range getAll.Orderslist{
+		fmt.Printf("Название книги: %v\n", ord.GetBookName())
 		fmt.Printf("Номер книги: %v\n", ord.GetBookId())
-		fmt.Printf("ФИО заказчика: %v\n", ord.GetLogin())
-		fmt.Printf("Пароль заказчика: %v\n", ord.GetPassword())
+		fmt.Printf("Логин заказчика: %v\n", ord.GetLogin())
+		fmt.Println()
 	}
 }

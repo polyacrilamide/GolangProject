@@ -3,43 +3,49 @@ package bookfinder
 import (
 	api "BooksOrdering/pkg/api"
 	"context"
-	"errors"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 )
 
-type BookRepository interface {
-	Find (book *api.BookInfo) (bool, error)
-}
+func Find (book *api.BookInfo) (bool, error){
+	db, err := sql.Open("mysql", "root:golangpass@tcp(localhost: 3306)/booksdb")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("select * from Books where bookId = ?", book.BookId)
+	if err != nil {
+		panic(err)
+	}
 
-type Repository struct {
-	Books []*api.BookInfo
-}
+	var bookName, bookId string
 
-func (repo *Repository) Find (book *api.BookInfo) (bool, error){
-	for _, bookID := range repo.Books {
-		if book.BookId == bookID.BookId {
+	for rows.Next() {
+		if err := rows.Scan(bookName, bookId); err == nil{
 			log.Println("Book finder: Запрашиваемая книга найдена.")
 			return true, nil
 		}
 	}
-	log.Printf("Запрашиваемой книги с номером %s не существует.\n", book.BookId)
-	log.Println("Поиск по названию:")
-	for _, bookName := range repo.Books{
-		if book.BookName == bookName.BookName{
+	rows, err = db.Query("select * from Books where bookName = ?", book.BookName)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		if err := rows.Scan(bookName, bookId); err == nil{
 			log.Println("Book finder: Запрашиваемая книга найдена.")
 			return true, nil
 		}
 	}
 	log.Println("Запрашиваемой книги не существует.")
-	return false, errors.New("книги не существует")
+	return false, nil
 }
 
-type GRPCServer struct {
-	BookRepository BookRepository
-}
+type GRPCServer struct {}
 
 func (s *GRPCServer) FindTheBook (ctx context.Context, book *api.BookInfo) (*api.Answer, error){
-	finder, err := s.BookRepository.Find(book)
+	finder, err := Find(book)
 	if err != nil {
 		return nil, err
 	}
